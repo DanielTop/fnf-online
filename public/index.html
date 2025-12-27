@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday Night Funkin' Online</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Главное меню -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-container">
+            <h1 class="title">FRIDAY NIGHT FUNKIN'</h1>
+            <h2 class="subtitle">ONLINE</h2>
+
+            <div class="menu-buttons">
+                <button id="btn-create" class="menu-btn">СОЗДАТЬ КОМНАТУ</button>
+                <button id="btn-join" class="menu-btn">ПРИСОЕДИНИТЬСЯ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран создания/присоединения -->
+    <div id="lobby-setup" class="screen">
+        <div class="setup-container">
+            <h2 id="setup-title">СОЗДАТЬ КОМНАТУ</h2>
+
+            <div class="form-group">
+                <label>Имя игрока:</label>
+                <input type="text" id="player-name" maxlength="12" placeholder="Введи имя">
+            </div>
+
+            <div class="form-group" id="room-id-group" style="display: none;">
+                <label>ID комнаты:</label>
+                <input type="text" id="room-id-input" maxlength="6" placeholder="XXXXXX">
+            </div>
+
+            <h3>Выбери персонажа:</h3>
+            <div class="character-select">
+                <div class="character-card selected" data-char="boyfriend">
+                    <canvas class="char-preview" id="preview-boyfriend"></canvas>
+                    <span>Boyfriend</span>
+                </div>
+                <div class="character-card" data-char="pico">
+                    <canvas class="char-preview" id="preview-pico"></canvas>
+                    <span>Pico</span>
+                </div>
+                <div class="character-card" data-char="tankman">
+                    <canvas class="char-preview" id="preview-tankman"></canvas>
+                    <span>Tankman</span>
+                </div>
+                <div class="character-card" data-char="nene">
+                    <canvas class="char-preview" id="preview-nene"></canvas>
+                    <span>Nene</span>
+                </div>
+                <div class="character-card" data-char="lemon">
+                    <canvas class="char-preview" id="preview-lemon"></canvas>
+                    <span>Lemon Demon</span>
+                </div>
+                <div class="character-card" data-char="spooky">
+                    <canvas class="char-preview" id="preview-spooky"></canvas>
+                    <span>Spooky Kids</span>
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button id="btn-back" class="menu-btn small">НАЗАД</button>
+                <button id="btn-confirm" class="menu-btn small primary">ПОДТВЕРДИТЬ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Лобби комнаты -->
+    <div id="room-lobby" class="screen">
+        <div class="lobby-container">
+            <div class="room-header">
+                <h2>КОМНАТА: <span id="room-code"></span></h2>
+                <button id="btn-copy-code" class="copy-btn">📋 Копировать</button>
+            </div>
+
+            <div class="players-area">
+                <div class="player-slot" id="player1-slot">
+                    <canvas class="player-char" id="player1-char"></canvas>
+                    <div class="player-info">
+                        <span class="player-name" id="player1-name">Ожидание...</span>
+                        <span class="player-status" id="player1-status"></span>
+                    </div>
+                </div>
+
+                <div class="vs-text">VS</div>
+
+                <div class="player-slot" id="player2-slot">
+                    <canvas class="player-char" id="player2-char"></canvas>
+                    <div class="player-info">
+                        <span class="player-name" id="player2-name">Ожидание...</span>
+                        <span class="player-status" id="player2-status"></span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Выбор локации:</h3>
+            <div class="location-select">
+                <div class="location-card selected" data-loc="stage">
+                    <canvas class="loc-preview" id="loc-stage"></canvas>
+                    <span>Сцена</span>
+                </div>
+                <div class="location-card" data-loc="spooky">
+                    <canvas class="loc-preview" id="loc-spooky"></canvas>
+                    <span>Особняк</span>
+                </div>
+                <div class="location-card" data-loc="philly">
+                    <canvas class="loc-preview" id="loc-philly"></canvas>
+                    <span>Филадельфия</span>
+                </div>
+                <div class="location-card" data-loc="tank">
+                    <canvas class="loc-preview" id="loc-tank"></canvas>
+                    <span>Военная база</span>
+                </div>
+            </div>
+
+            <div class="lobby-buttons">
+                <button id="btn-leave" class="menu-btn small">ВЫЙТИ</button>
+                <button id="btn-ready" class="menu-btn small">ГОТОВ</button>
+                <button id="btn-start" class="menu-btn small primary" style="display: none;">НАЧАТЬ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Игровой экран -->
+    <div id="game-screen" class="screen">
+        <canvas id="game-canvas"></canvas>
+
+        <div id="game-ui">
+            <div class="score-panel left">
+                <span class="score-label" id="p1-label">Player 1</span>
+                <span class="score-value" id="p1-score">0</span>
+            </div>
+            <div class="score-panel right">
+                <span class="score-label" id="p2-label">Player 2</span>
+                <span class="score-value" id="p2-score">0</span>
+            </div>
+        </div>
+
+        <div id="combo-display"></div>
+        <div id="rating-display"></div>
+    </div>
+
+    <!-- Экран результатов -->
+    <div id="results-screen" class="screen">
+        <div class="results-container">
+            <h1 id="winner-text">ПОБЕДИТЕЛЬ!</h1>
+            <div class="final-scores">
+                <div class="final-score">
+                    <span class="final-name" id="final-p1-name">Player 1</span>
+                    <span class="final-value" id="final-p1-score">0</span>
+                </div>
+                <div class="final-score">
+                    <span class="final-name" id="final-p2-name">Player 2</span>
+                    <span class="final-value" id="final-p2-score">0</span>
+                </div>
+            </div>
+            <button id="btn-rematch" class="menu-btn">РЕВАНШ</button>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/characters.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
